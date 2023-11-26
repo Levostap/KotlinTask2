@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">KotlinTask2</string>
+    <string name="savedButton">Кэш</string>
+    <string name="settingsButton">Настройки</string>
+    <string name="randomButton">Рандом</string>
+    <string name="searchButton">Поиск</string>
+    <string name="txtInHint">Neko</string>
+    <string name="retry">Retry</string>
+</resources>
