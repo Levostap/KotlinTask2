@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class AnimeAdapter(private val data : MutableList<String>, private val context : Fragment) : RecyclerView.Adapter<AnimeAdapter.ViewHolder>() {
+class AnimeAdapter(private val data : MutableList<String>, private val callback : FragmentCallback) : RecyclerView.Adapter<AnimeAdapter.ViewHolder>() {
 
     private val urls = mutableListOf<String>()
-
     class ViewHolder(item : View) : RecyclerView.ViewHolder(item){
         val img : ImageView = item.findViewById(R.id.imageView2)
     }
@@ -23,7 +21,7 @@ class AnimeAdapter(private val data : MutableList<String>, private val context :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        val context = callback.getFragment()
         urls.add(data[position])
         Glide.with(context)
             .load(data[position])

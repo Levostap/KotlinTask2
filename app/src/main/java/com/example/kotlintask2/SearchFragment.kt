@@ -1,5 +1,6 @@
 package com.example.kotlintask2
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import retrofit2.http.Query
 import java.lang.Exception
 
-class SearchFragment : Fragment(R.layout.search_fragment) {
+class SearchFragment : Fragment(R.layout.search_fragment), FragmentCallback {
 
     private val adapter = AnimeAdapter(mutableListOf(), this)
     private lateinit var recyclerView : RecyclerView
@@ -43,9 +44,9 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
     fun load(query : String){
         isLoading = true
         lifecycleScope.launch {
-            val api = MainActivity().createApi()
+            val api = ApiWorker().createApi()
             try{
-                val response = api.searchPic(query, 1, MainActivity.ITEMS_PER_PAGE)
+                val response = api.searchPic(query, 1, ApiWorker.ITEMS_PER_PAGE)
                 for(i in 0 until response.results.size){
                     adapter.addData(response.results[i].url)
                 }
@@ -58,4 +59,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         }
     }
 
+    override fun getFragment() : Context {
+        return requireContext()
+    }
 }

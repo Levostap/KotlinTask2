@@ -1,5 +1,6 @@
 package com.example.kotlintask2
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +16,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.ArrayList
 
-class RandomFragment : Fragment(R.layout.random_fragment) {
+class RandomFragment : Fragment(R.layout.random_fragment), FragmentCallback {
 
     private val adapter = AnimeAdapter(mutableListOf(), this)
     private lateinit var retryButton : Button
@@ -68,9 +70,9 @@ class RandomFragment : Fragment(R.layout.random_fragment) {
             krutilka.visibility = View.VISIBLE
             plashka.visibility = View.VISIBLE
             retryButton.visibility = View.INVISIBLE
-            val api = MainActivity().createApi()
+            val api = ApiWorker().createApi()
             try{
-                val response = api.getPicRandom(MainActivity.TAG, MainActivity.ITEMS_PER_PAGE)
+                val response = api.getPicRandom(ApiWorker.TAG, ApiWorker.ITEMS_PER_PAGE)
                 for(i in 0 until response.results.size){
                     adapter.addData(response.results[i].url)
                 }
@@ -87,14 +89,19 @@ class RandomFragment : Fragment(R.layout.random_fragment) {
             }
         }
     }
+
+    override fun getFragment() : Context {
+        return requireContext()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putStringArrayList(SAVED_DATA, adapter.getUrls() as ArrayList<String>)
         adapter.clearData()
     }
     companion object{
-        val SAVED_DATA = "urls"
-        val LANDSCAPE_SIZE = 4
-        val VERTICAL_SIZE = 2
+        const val SAVED_DATA = "urls"
+        const val LANDSCAPE_SIZE = 4
+        const val VERTICAL_SIZE = 2
     }
 }
